@@ -1,0 +1,73 @@
+<div class="list row">
+  <div class="col-md-8">
+    <div class="input-group mb-3">
+      <input type="text" class="form-control" placeholder="Search by title" [(ngModel)]="title" />
+      <div class="input-group-append">
+        <button class="btn btn-outline-secondary" type="button" (click)="searchTitle()">Search</button>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <h4>Tasks List</h4>
+    <div
+      *ngFor="let task of tasks; let i = index"
+      [class.active]="i == currentIndex"
+      (click)="setActiveTask(task, i)"
+    >
+
+      <div class="toast-container position-static">
+        <div class="toast show" role="alert" aria-live="assertive" aria-atomic="true">
+          <div class="toast-header">
+            <strong class="me-auto">{{ task.title }}</strong>
+            <small class="text-body-secondary">{{ formatDate(task.created_at) }}</small>
+            <button type="button" class="btn-close" (click)="openModal(myModal, task)"  aria-label="Close"></button>
+          </div>
+          <div class="toast-body">
+            {{ task.description }}
+          </div>
+        </div>
+      </div>
+      <br>
+    </div>
+
+  </div>
+  <div class="col-md-6">
+    <div *ngIf="currentTask.id">
+      <h4>Task</h4>
+      <div>
+        <label><strong>Title:</strong></label> {{ currentTask.title }}
+      </div>
+      <div>
+        <label><strong>Description:</strong></label> {{ currentTask.description }}
+      </div>
+      <a class="badge badge-warning" [routerLink]="['/tasks', currentTask.id]">Edit</a>
+    </div>
+    <div *ngIf="!currentTask.id">
+      <br>
+      <p>Please click on a Task...</p>
+    </div>
+  </div>
+</div>
+
+
+<ng-template #myModal>
+  <div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="myModalLabel">Modal title</h5>
+          <button type="button" class="btn-close" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          Are you sure you wanna delete this task?
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-warning" (click)="deleteTask()">Yes</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+
